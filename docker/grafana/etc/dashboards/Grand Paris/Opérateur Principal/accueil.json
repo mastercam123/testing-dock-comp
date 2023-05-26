@@ -1,0 +1,1905 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "OK"
+                      },
+                      "1": {
+                        "index": 1,
+                        "text": "HS"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 29,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "none",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "group3",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket_gapfill(\n    INTERVAL '5 min',\n    time_tag_at_source,\n    '${__from:date}',\n    '${__to:date}'\n  ) as time,\n  description AS metric,\n  locf(max(${view_status}), 1)\nFROM\n  hist_view h\n  right outer join realtime_data rd on rd.tag = h.tag\nWHERE\n  protocolSourceConnectionNumber = '${protocolSourceConnectionNumber}'\n  AND $__timeFilter(time_tag_at_source)\n  AND _id IN (\n    select\n      unnest(\n        array [\n          string_to_array(\n            regexp_replace(\n              '${level0:raw},${level1:raw},${level2:raw},${level3:raw},${level4:raw},${level5:raw}', ',+', ',', 'g'\n            ),\n            ','\n          )\n        ]\n      )\n  )\n  \n  AND rd.tag ~ '^[^\\/]+(\\/[^\\/]+){${depth}}$'\nGROUP BY\n  1,\n  2\nORDER BY\n  1,\n  2",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "${view_status}"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "aggregate"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag_at_source",
+          "timeColumnType": "timestamptz",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "group2",
+                "=",
+                "${group2:sqlstring}"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "ungroupeddescription",
+                "IS",
+                "NULL"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "group3",
+                "IS NOT",
+                "NULL"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": true,
+          "metricColumn": "group3",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket_gapfill(\n    INTERVAL '5 min',\n    time_tag_at_source,\n    '${__from:date}',\n    '${__to:date}'\n  ) as time,\n  description AS metric,\n  locf(max(${view_status}), 1)\nFROM\n  hist_view\nWHERE\n  protocolSourceConnectionNumber = '${protocolSourceConnectionNumber}'\n  AND $__timeFilter(time_tag_at_source)\n  AND _id IN (\n    select\n      unnest(\n        array [\n          string_to_array(\n            regexp_replace(\n              '${level0:raw},${level1:raw},${level2:raw},${level3:raw},${level4:raw},${level5:raw}', ',+', ',', 'g'\n            ),\n            ','\n          )\n        ]\n      )\n  )\n  \n  AND tag ~ '^[^\\/]+(\\/[^\\/]+){${depth}}$'\nGROUP BY\n  1,\n  2\nORDER BY\n  1,\n  2",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "${view_status}"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "aggregate"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag_at_source",
+          "timeColumnType": "timestamptz",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "group2",
+                "=",
+                "${group2:sqlstring}"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "ungroupeddescription",
+                "IS",
+                "NULL"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "group3",
+                "IS NOT",
+                "NULL"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Évolution des états",
+      "type": "status-history"
+    },
+    {
+      "datasource": {
+        "type": "grafana-mongodb-opensource-datasource",
+        "uid": "ptPu0P17k"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#a8a8a8",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "invalid"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Défaut Physique"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "alarmed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Alarme en cours"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/tag|protocolSourceObjectAddress|alarmState|alarmRange|ungroupedDescription|location|status/"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": false
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "QUERY_STATIONS_1"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "voir les AdV de la gare ${__data.fields.l2}",
+                    "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=3\n&var-level1=${__data.fields.l1}\n&var-level2=${__data.fields.l2}\n&var-level3=All\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "QUERY_ADV"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "voir les PMDiagBoxes de l'AdV ${__data.fields.l2} / ${__data.fields.l3}",
+                    "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=4\n&var-level1=${__data.fields.l1}\n&var-level2=${__data.fields.l2}\n&var-level3=${__data.fields.l3}\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+                  },
+                  {
+                    "title": "retour à la gare ${__data.fields.l2}",
+                    "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=2\n&var-level1=${__data.fields.l1}\n&var-level2=${__data.fields.l2}\n&var-level3=All\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "QUERY_PMDIAGBOXES"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "sélectionner ce PMDiagBox ${__data.fields.l2} / ${__data.fields.l3} / ${__data.fields.l4}",
+                    "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=4\n&var-level1=${__data.fields.l1}\n&var-level2=${__data.fields.l2}\n&var-level3=${__data.fields.l3}\n&var-level4=${__data.fields.l4}\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+                  },
+                  {
+                    "title": "retour à l'AdV ${__data.fields.l2} / ${__data.fields.l3}",
+                    "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=3\n&var-level1=${__data.fields.l1}\n&var-level2=${__data.fields.l2}\n&var-level3=${__data.fields.l3}\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+                  },
+                  {
+                    "title": "voir la page DATA",
+                    "url": "/d/uxzRolWVz/page-data\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=4\n&var-level1=${__data.fields.l1}\n&var-level2=${__data.fields.l2}\n&var-level3=${__data.fields.l3}\n&var-level4=${__data.fields.l4}\n&var-level5=All\n&${__url_time_range}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 13,
+        "x": 7,
+        "y": 0
+      },
+      "id": 224,
+      "links": [
+        {
+          "title": "voir toutes les gares",
+          "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=2\n&var-level1=All\n&var-level2=All\n&var-level3=All\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+        },
+        {
+          "title": "voir tous les AdVs",
+          "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=3\n&var-level1=All\n&var-level2=All\n&var-level3=All\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+        },
+        {
+          "title": "voir tous les PMDiagBoxes",
+          "url": "/d/UpOlTCiVk/${__dashboard}\n?orgId=${__org}\n&var-teams=All\n&${view_status:queryparam}\n&var-depth=4\n&var-level1=All\n&var-level2=All\n&var-level3=All\n&var-level4=All\n&var-level5=All\n&var-indicateurs=All\n&var-courbes=All\n&${__url_time_range}"
+        }
+      ],
+      "options": {
+        "basemap": {
+          "config": {
+            "url": "https://tiles.jawg.io/jawg-transports/{z}/{x}/{y}.png?api-key=OqF0sBm9jHIRsN5zQ7a0LmCvvLQsw6QbbtsMW8Q0tQrMxrZh5xYwtLq7cf0sWC1l"
+          },
+          "name": "Layer 0",
+          "opacity": 0.5,
+          "type": "xyz"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": true,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "field": "value",
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 12,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/triangle.svg",
+                  "mode": "fixed"
+                },
+                "text": {
+                  "field": "description",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "QUERY_PMDIAGBOXES"
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "PMDiagBoxes",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "field": "value",
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 12,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "text": {
+                  "field": "description",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "QUERY_ADV"
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "AdV",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "field": "value",
+                  "fixed": "dark-green"
+                },
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 4,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 20,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/unicons/subway-alt.svg",
+                  "mode": "fixed"
+                },
+                "text": {
+                  "field": "description",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "textConfig": {
+                  "fontSize": 10,
+                  "offsetX": 0,
+                  "offsetY": 8,
+                  "textAlign": "center",
+                  "textBaseline": "top"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "QUERY_STATIONS_1"
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Gares",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "none"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "fit",
+          "lastOnly": false,
+          "lat": 0,
+          "layer": "PMDiagBoxes",
+          "lon": 0,
+          "shared": false,
+          "zoom": 15
+        }
+      },
+      "pluginVersion": "9.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-custom-mongodb-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "hide": false,
+          "rawQuery": true,
+          "refId": "QUERY_STATIONS_1",
+          "target": "db.realtimeData.aggregate([\n{\n  $match: {\n    $and: [\n      {protocolSourceConnectionNumber: $protocolSourceConnectionNumber},\n      {tag: /^[^\\/]+(\\/[^\\/]+){${depth}}$/},\n      {tag: /^[^\\/]+(\\/[^\\/]+){2}$/}, // !!!!!!!!!!!!!!!!!!!!!!!!!!\n      {tag: {$regex: ${pathPattern:doublequote}}},\n    ]\n  }\n},\n{\"$sort\": {\"location.properties.code\": 1}},\n{$addFields: {address: {$split: [\"$protocolSourceObjectAddress\",\"/\"]},}},\n {\n        \"$project\": {\n            \"_id\": 1,\n            \"description\": 1,\n            \"metric\": \"$description\",\n            \"protocolSourceObjectAddressBAK\": 1,\n            \"tag\": 1,\n            \"ungroupedDescription\": 1,\n            \"alarmed\": 1,\n            \"alarmState\": 1,\n            \"alarmRange\": 1,\n            \"invalid\": 1,\n            \"timeTag\": 1,\n            \"timeTagAtSource\": 1,\n            \"code\": \"$location.properties.code\",\n            \"connection\": \"$location.properties.connexion\",\n            \"lines\": \"$location.properties.ligne\",\n            \"longitude\": { \"$arrayElemAt\": [\"$location.geometry.coordinates\", 0] },\n            \"latitude\": { \"$arrayElemAt\": [\"$location.geometry.coordinates\", 1] },\n            \"location\": 1,\n            \"status\": \"$${view_status}\",\n//            \"value\": {$toInt: \"$${view_status}\"},\n\"value\": {$cond: [{$eq: [\"$timeTag\", null]}, null, {$toInt: \"$${view_status}\"}]},\n//address: 1,\nl1: {$arrayElemAt: [\"$address\", 1]},\nl2: {$arrayElemAt: [\"$address\", 2]},\nl3: {$arrayElemAt: [\"$address\", 3]},\nl4: {$arrayElemAt: [\"$address\", 4]},\nl5: {$arrayElemAt: [\"$address\", 5]},\n\n        }\n    }\n])",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-custom-mongodb-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "hide": false,
+          "rawQuery": true,
+          "refId": "QUERY_ADV",
+          "target": "db.realtimeData.aggregate([\n{\n  $match: {\n    $and: [\n      {protocolSourceConnectionNumber: $protocolSourceConnectionNumber},\n      {tag: /^[^\\/]+(\\/[^\\/]+){${depth}}$/},\n      {tag: /^[^\\/]+(\\/[^\\/]+){3}$/}, // !!!!!!!!!!!!!!!!!!!!!!!!!!\n      {tag: {$regex: ${pathPattern:doublequote}}},\n    ]\n  }\n},\n{\"$sort\": {\"location.properties.code\": 1}},\n{$addFields: {address: {$split: [\"$protocolSourceObjectAddress\",\"/\"]},}},\n {\n        \"$project\": {\n            \"_id\": 1,\n            \"description\": 1,\n            \"metric\": \"$description\",\n            \"protocolSourceObjectAddressBAK\": 1,\n            \"tag\": 1,\n            \"ungroupedDescription\": 1,\n            \"alarmed\": 1,\n            \"alarmState\": 1,\n            \"alarmRange\": 1,\n            \"invalid\": 1,\n            \"timeTag\": 1,\n            \"timeTagAtSource\": 1,\n            \"code\": \"$location.properties.code\",\n            \"connection\": \"$location.properties.connexion\",\n            \"lines\": \"$location.properties.ligne\",\n            \"longitude\": { \"$arrayElemAt\": [\"$location.geometry.coordinates\", 0] },\n            \"latitude\": { \"$arrayElemAt\": [\"$location.geometry.coordinates\", 1] },\n            \"location\": 1,\n            \"status\": \"$${view_status}\",\n//            \"value\": {$toInt: \"$${view_status}\"},\n\"value\": {$cond: [{$eq: [\"$timeTag\", null]}, null, {$toInt: \"$${view_status}\"}]},\n//address: 1,\nl1: {$arrayElemAt: [\"$address\", 1]},\nl2: {$arrayElemAt: [\"$address\", 2]},\nl3: {$arrayElemAt: [\"$address\", 3]},\nl4: {$arrayElemAt: [\"$address\", 4]},\nl5: {$arrayElemAt: [\"$address\", 5]},\n\n        }\n    }\n])",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-custom-mongodb-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "hide": false,
+          "rawQuery": true,
+          "refId": "QUERY_PMDIAGBOXES",
+          "target": "db.realtimeData.aggregate([\n{\n  $match: {\n    $and: [\n      {protocolSourceConnectionNumber: $protocolSourceConnectionNumber},\n      {tag: /^[^\\/]+(\\/[^\\/]+){${depth}}$/},\n      {tag: /^[^\\/]+(\\/[^\\/]+){4}$/}, // !!!!!!!!!!!!!!!!!!!!!!!!!!\n      {tag: {$regex: ${pathPattern:doublequote}}},\n    ]\n  }\n},\n{\"$sort\": {\"location.properties.code\": 1}},\n{$addFields: {address: {$split: [\"$protocolSourceObjectAddress\",\"/\"]},}},\n {\n        \"$project\": {\n            \"_id\": 1,\n            \"description\": 1,\n            \"metric\": \"$description\",\n            \"protocolSourceObjectAddressBAK\": 1,\n            \"tag\": 1,\n            \"ungroupedDescription\": 1,\n            \"alarmed\": 1,\n            \"alarmState\": 1,\n            \"alarmRange\": 1,\n            \"invalid\": 1,\n            \"timeTag\": 1,\n            \"timeTagAtSource\": 1,\n            \"code\": \"$location.properties.code\",\n            \"connection\": \"$location.properties.connexion\",\n            \"lines\": \"$location.properties.ligne\",\n            \"longitude\": { \"$arrayElemAt\": [\"$location.geometry.coordinates\", 0] },\n            \"latitude\": { \"$arrayElemAt\": [\"$location.geometry.coordinates\", 1] },\n            \"location\": 1,\n            \"status\": \"$${view_status}\",\n//            \"value\": {$toInt: \"$${view_status}\"},\n\"value\": {$cond: [{$eq: [\"$timeTag\", null]}, null, {$toInt: \"$${view_status}\"}]},\n//address: 1,\nl1: {$arrayElemAt: [\"$address\", 1]},\nl2: {$arrayElemAt: [\"$address\", 2]},\nl3: {$arrayElemAt: [\"$address\", 3]},\nl4: {$arrayElemAt: [\"$address\", 4]},\nl5: {$arrayElemAt: [\"$address\", 5]},\n\n        }\n    }\n])",
+          "type": "table"
+        }
+      ],
+      "title": "CARTO les ${depth} de ${pathPattern}",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 132,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  distinct(tag),\n  count(*) as \"Alarmes en cours\"\nFROM hist_view\nWHERE\n  $__timeFilter(time_tag)\n  AND alarmed = 1\n  -- AND cast(_id as bigint) in (${devices:raw})\n  AND _id IN (\n    select\n      unnest(\n        array [\n          string_to_array(\n            regexp_replace(\n              '${level0:raw},${level1:raw},${level2:raw},${level3:raw},${level4:raw},${level5:raw}', ',+', ',', 'g'\n            ),\n            ','\n          )\n        ]\n      )\n  )\n  AND tag ~ '^[^\\/]+(\\/[^\\/]+){${depth}}$'\n\n\nGROUP BY 1\nORDER BY 1,2",
+          "refId": "alarms",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  distinct(tag),\n  count(*) as \"nb équipements connectés\"\nFROM hist_view\nWHERE\n  $__timeFilter(time_tag)\n  AND invalid = 0\n  -- AND cast(_id as bigint) in (${devices:raw})\n    AND _id IN (\n    select\n      unnest(\n        array [\n          string_to_array(\n            regexp_replace(\n              '${level0:raw},${level1:raw},${level2:raw},${level3:raw},${level4:raw},${level5:raw}', ',+', ',', 'g'\n            ),\n            ','\n          )\n        ]\n      )\n  )\n  AND tag ~ '^[^\\/]+(\\/[^\\/]+){${depth}}$'\n\nGROUP BY 1\nORDER BY 1,2",
+          "refId": "nb_connectes",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  distinct(tag),\n  max(value)\nFROM hist_view\nWHERE\n  $__timeFilter(time_tag)\n  AND invalid = 0\n  -- AND cast(_id as bigint) in (${devices:raw})\n    AND _id IN (\n    select\n      unnest(\n        array [\n          string_to_array(\n            regexp_replace(\n              '${level0:raw},${level1:raw},${level2:raw},${level3:raw},${level4:raw},${level5:raw}', ',+', ',', 'g'\n            ),\n            ','\n          )\n        ]\n      )\n  )\n  AND tag ~ '^[^\\/]+(\\/[^\\/]+){${depth}}$'\n\nGROUP BY 1\nORDER BY 1,2",
+          "refId": "pression_max",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [],
+          "hide": true,
+          "metricColumn": "description",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_tag AS \"time\",\n  description AS metric,\n  value\nFROM hist_view\nWHERE\n  $__timeFilter(time_tag) AND\n  cast(_id as bigint) IN (${indicateurs:raw})\nORDER BY 1,2",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "cast(_id as bigint)",
+                "IN",
+                "(${indicateurs:raw})"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Indicateurs ${pathPattern}",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 0,
+        "y": 8
+      },
+      "id": 9,
+      "options": {
+        "alertInstanceLabelFilter": "",
+        "alertName": "",
+        "dashboardAlerts": false,
+        "groupBy": [],
+        "groupMode": "default",
+        "maxItems": 20,
+        "sortOrder": 5,
+        "stateFilter": {
+          "error": true,
+          "firing": true,
+          "noData": true,
+          "normal": true,
+          "pending": true
+        },
+        "viewMode": "list"
+      },
+      "pluginVersion": "8.5.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  time_tag AS \"time\",\n  value\nFROM hist\nWHERE\n  $__timeFilter(time_tag)\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "hist",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "MESSAGES",
+      "type": "alertlist"
+    },
+    {
+      "datasource": {
+        "type": "grafana-mongodb-opensource-datasource",
+        "uid": "ptPu0P17k"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 7,
+        "y": 12
+      },
+      "id": 230,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-mongodb-opensource-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "rawQuery": true,
+          "refId": "A",
+          "target": "db.realtimeData.aggregate([\n{\n  $match: {\n    $and: [\n    { tag: { $regex: \"${pathPattern}\" } },\n    { tag: { $regex: /^[^\\/]+(\\/[^\\/]+){${depth}}$/ } },\n    ]\n  }\n},\n{\n  $project: {\n    _id: 0,\n    metric: \"$description\",\n    \"${view_status}\": { $toInt: \"$${view_status}\" },\n    \"not ${view_status}\": { $toInt: {$not: \"$${view_status}\"} },\n  }\n},\n])",
+          "type": "table"
+        }
+      ],
+      "title": "ratio ${view_status} des ${depth} sur ${pathPattern}",
+      "transformations": [],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 12,
+        "y": 12
+      },
+      "id": 225,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent",
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  description as metric,\n  -- sum(${view_status}) as \"${view_status}\"\n    sum(${view_status}) as value\nFROM hist_view\nWHERE\n  $__timeFilter(time_tag)\n  --AND CAST(_id as bigint) IN (${devices:raw})\n  AND tag LIKE '%${pathPattern:raw}%' \n  AND regexp_match(tag, '^[^\\/]+(\\/[^\\/]+){${depth}}$') IS NOT NULL\nGROUP BY description\nORDER BY 2 desc,1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Défauts ${view_status} des ${depth} sur ${pathPattern}",
+      "transformations": [],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-mongodb-opensource-datasource",
+        "uid": "ptPu0P17k"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 0,
+            "fillOpacity": 69,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 2,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#c0c0c0",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 228,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.62,
+        "colorByField": "color",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "none",
+          "sort": "none"
+        },
+        "xField": "metric",
+        "xTickLabelMaxLength": 32,
+        "xTickLabelRotation": 45,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.1.2",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-mongodb-opensource-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "hide": false,
+          "rawQuery": true,
+          "refId": "A",
+          "target": "db.realtimeData.aggregate([\n{$addFields: {deeper: {$add: [${depth}, 1] }}},\n{\n$match:{\n\n  protocolSourceConnectionNumber: ${protocolSourceConnectionNumber},\n  $and:[\n    { tag: /^[^\\/]+(\\/[^\\/]+){${depth}}$/},\n//    { tag: /^[^\\/]+(\\/[^\\/]+){2}$/},\n    { tag: { $regex: ${pathPattern:doublequote} }},\n  ],\n  timeTag: {$ne: 0}\n},\n},\n{\n$sort: {\"location.properties.code\": 1}\n},\n{\n$project: {\n  value: {$toInt: \"1\"}, // constant bar height\n  metric: \"$$ROOT.description\",\n  _id: 0,\ntag:1,\n//  color: \"$$view_status\"\n  color: {$cond: [{$eq: [\"$timeTag\", null]}, null, {$toInt: \"$$view_status\"}]}\n}\n}, \n\n])",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-mongodb-opensource-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "hide": true,
+          "rawQuery": true,
+          "refId": "B",
+          "target": "db.realtimeData.aggregate([  \n{\n$match:{\n\"location.properties.ligne\": {$in: [${line:doublequote}]},\n  protocolSourceConnectionNumber: ${protocolSourceConnectionNumber},\n  $and:[\n    { tag: /^[^\\/]+(\\/[^\\/]+){${depth}}$/},\n  ],\n  timeTag: {$ne: 0}\n},\n},\n{\n$sort: {\"location.properties.code\": 1}\n},\n{\n$project: {\n  value: {$toInt: \"1\"}, // constant bar height\n  metric: \"$$ROOT.description\",\n  _id: 0,\n  invalid: {$not: \"$invalid\"}\n}\n}, \n\n])",
+          "type": "table"
+        }
+      ],
+      "title": "les ${depth} de ${pathPattern}",
+      "transformations": [],
+      "type": "barchart"
+    }
+  ],
+  "refresh": "10s",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "frser-sqlite-datasource",
+          "uid": "xRsfehEnz"
+        },
+        "definition": "select\n\tt.id\nfrom\n\tteam t\nJOIN team_member tm ON\n\tt.id = tm.team_id\nJOIN user u on\n\tu.id = tm.user_id\nWHERE\n\tu.email = '${__user.email}'\n\tAND u.org_id = ${__org}\n\tAND u.is_disabled IS FALSE\n/* TODO should admin users belong to every team? */",
+        "description": "teams current user belongs to",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Teams",
+        "multi": true,
+        "name": "teams",
+        "options": [],
+        "query": "select\n\tt.id\nfrom\n\tteam t\nJOIN team_member tm ON\n\tt.id = tm.team_id\nJOIN user u on\n\tu.id = tm.user_id\nWHERE\n\tu.email = '${__user.email}'\n\tAND u.org_id = ${__org}\n\tAND u.is_disabled IS FALSE\n/* TODO should admin users belong to every team? */",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Physique",
+          "value": "invalid"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "view_status",
+        "options": [
+          {
+            "selected": true,
+            "text": "Physique",
+            "value": "invalid"
+          },
+          {
+            "selected": false,
+            "text": "Logique",
+            "value": "alarmed"
+          }
+        ],
+        "query": "Physique : invalid,Logique : alarmed",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-custom-mongodb-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.permissions.aggregate([\n  {\"$match\": {\"teamId\": {\"$in\": [${teams:raw}]}}},\n  {\"$unwind\": \"$realtimeDataId\"},\n{\"$project\": {\"_id\": \"$realtimeDataId\"}},\n{\"$sort\": {\"_id\": 1}}\n])\n",
+        "description": "returns every device the user is allowed to deal with",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "allowed_objects",
+        "options": [],
+        "query": "db.permissions.aggregate([\n  {\"$match\": {\"teamId\": {\"$in\": [${teams:raw}]}}},\n  {\"$unwind\": \"$realtimeDataId\"},\n{\"$project\": {\"_id\": \"$realtimeDataId\"}},\n{\"$sort\": {\"_id\": 1}}\n])\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "Ligne 15"
+          ],
+          "value": [
+            "L15"
+          ]
+        },
+        "hide": 2,
+        "includeAll": true,
+        "label": "Ligne",
+        "multi": true,
+        "name": "line",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Ligne 14",
+            "value": "L14"
+          },
+          {
+            "selected": true,
+            "text": "Ligne 15",
+            "value": "L15"
+          },
+          {
+            "selected": false,
+            "text": "Ligne 16",
+            "value": "L16"
+          },
+          {
+            "selected": false,
+            "text": "Ligne 17",
+            "value": "L17"
+          },
+          {
+            "selected": false,
+            "text": "Ligne 18",
+            "value": "L18"
+          }
+        ],
+        "query": "Ligne 14 : L14,Ligne 15 : L15,Ligne 16 : L16,Ligne 17 : L17,Ligne 18 : L18,",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "8888",
+          "value": "8888"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "protocolSourceConnectionNumber",
+        "options": [
+          {
+            "selected": false,
+            "text": "1200",
+            "value": "1200"
+          },
+          {
+            "selected": true,
+            "text": "8888",
+            "value": "8888"
+          }
+        ],
+        "query": "1200,8888",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "GA17 - Villejuif Institut Gustave Roussy",
+            "GA33 - Saint-Denis Pleyel",
+            "GA08 - Noisy - Champs",
+            "GA09 - Bry - Villiers - Champigny",
+            "GA10 - Champigny Centre",
+            "GA11 - Saint-Maur - Créteil",
+            "GA12 - Créteil L'Echat",
+            "GA13 - Le Vert de Maisons",
+            "GA14 - Les Ardoines",
+            "GA15 - Vitry Centre",
+            "GA16 - Villejuif Louis Aragon",
+            "GA17 - Villejuif Institut Gustave Roussy",
+            "GA18 - Arcueil - Cachan",
+            "GA19 - Bagneux",
+            "GA20 - Châtillon - Montrouge",
+            "GA21 - Fort d'Issy - Vanves - Clamart",
+            "GA22 - Issy RER",
+            "GA23 - Pont de Sèvres",
+            "GA24 - Saint-Cloud",
+            "GA25 - Rueil - Suresnes \"Mont-Valérien\"",
+            "GA26 - Nanterre La Boule",
+            "GA27 - Nanterre La Folie",
+            "GA28 - La Défense",
+            "GA29 - Bécon-les-Bruyères",
+            "GA30 - Bois-Colombes",
+            "GA31 - Les Agnettes",
+            "GA32 - Les Grésillons",
+            "GA33 - Saint-Denis Pleyel",
+            "GA64 - Stade de France",
+            "GA65 - Mairie d'Aubervilliers",
+            "GA66 - Fort d'Aubervilliers",
+            "GA67 - Drancy - Bobigny",
+            "GA68 - Bobigny Pablo Picasso",
+            "GA69 - Pont de Bondy",
+            "GA70 - Bondy",
+            "GA71 - Rosny Bois-Perrier",
+            "GA73 - Val de Fontenay",
+            "GA74 - Nogent - Le Perreux",
+            "GA08 - Noisy - Champs",
+            "GA33 - Saint-Denis Pleyel",
+            "GA33 - Saint-Denis Pleyel"
+          ],
+          "value": [
+            "8888000101",
+            "8888000098",
+            "8888000102",
+            "8888000126",
+            "8888000104",
+            "8888000118",
+            "8888000108",
+            "8888000120",
+            "8888000109",
+            "8888000124",
+            "8888000110",
+            "8888000107",
+            "8888000121",
+            "8888000139",
+            "8888000138",
+            "8888000123",
+            "8888000128",
+            "8888000127",
+            "8888000129",
+            "8888000125",
+            "8888000112",
+            "8888000113",
+            "8888000114",
+            "8888000115",
+            "8888000146",
+            "8888000147",
+            "8888000149",
+            "8888000148",
+            "8888000150",
+            "8888000130",
+            "8888000131",
+            "8888000132",
+            "8888000133",
+            "8888000134",
+            "8888000135",
+            "8888000136",
+            "8888000137",
+            "8888000173",
+            "8888000167",
+            "8888000168",
+            "8888000151"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n{\n\"$match\": {\n\"location.properties.ligne\": {\"$in\": [${line:doublequote}]},\n\"protocolSourceObjectAddress\": /^[^\\/]+(\\/[^\\/]+){2}$/,\n\"protocolSourceConnectionNumber\": ${protocolSourceConnectionNumber:raw}\n}\n},{\n//\"$project\": {\"_id\" : \"$$ROOT.tag\"}\n\"$project\": {\"__value\" : \"$$ROOT._id\", \"__text\" : \"$$ROOT.description\"}\n},\n{\n$sort: {\"location.properties.code\": 1}\n}\n])",
+        "hide": 2,
+        "includeAll": false,
+        "multi": true,
+        "name": "devices",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n{\n\"$match\": {\n\"location.properties.ligne\": {\"$in\": [${line:doublequote}]},\n\"protocolSourceObjectAddress\": /^[^\\/]+(\\/[^\\/]+){2}$/,\n\"protocolSourceConnectionNumber\": ${protocolSourceConnectionNumber:raw}\n}\n},{\n//\"$project\": {\"_id\" : \"$$ROOT.tag\"}\n\"$project\": {\"__value\" : \"$$ROOT._id\", \"__text\" : \"$$ROOT.description\"}\n},\n{\n$sort: {\"location.properties.code\": 1}\n}\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Gare",
+          "value": "2"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Niveau de zoom",
+        "multi": false,
+        "name": "depth",
+        "options": [
+          {
+            "selected": false,
+            "text": "Ligne",
+            "value": "1"
+          },
+          {
+            "selected": true,
+            "text": "Gare",
+            "value": "2"
+          },
+          {
+            "selected": false,
+            "text": "AdV",
+            "value": "3"
+          },
+          {
+            "selected": false,
+            "text": "PMDiagBox",
+            "value": "4"
+          }
+        ],
+        "query": "Ligne : 1,Gare : 2,AdV : 3,PMDiagBox : 4",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "Ligne 15",
+          "value": "8888000176"
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n{\n\"$match\": {\n\"protocolSourceObjectAddress\": /^[^\\/]+(\\/[^\\/]+){1}$/,\n\"protocolSourceConnectionNumber\": ${protocolSourceConnectionNumber:raw}\n}\n},{\n\"$project\": {\"__value\" : \"$$ROOT._id\", \"__text\" : \"$$ROOT.description\"}\n},\n{\n$sort: {\"location.properties.code\": 1}\n}\n])",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Ligne",
+        "multi": false,
+        "name": "level1",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n{\n\"$match\": {\n\"protocolSourceObjectAddress\": /^[^\\/]+(\\/[^\\/]+){1}$/,\n\"protocolSourceConnectionNumber\": ${protocolSourceConnectionNumber:raw}\n}\n},{\n\"$project\": {\"__value\" : \"$$ROOT._id\", \"__text\" : \"$$ROOT.description\"}\n},\n{\n$sort: {\"location.properties.code\": 1}\n}\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level1:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Gare",
+        "multi": true,
+        "name": "level2",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level1:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level2:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "hide": 0,
+        "includeAll": true,
+        "label": "AdV",
+        "multi": true,
+        "name": "level3",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level2:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level3:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "hide": 0,
+        "includeAll": true,
+        "label": "PMDiagBox",
+        "multi": true,
+        "name": "level4",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level3:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level4:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $addFields: { \"children.address\": { $split: [ \"$protocolSourceObjectAddress\", \"/\" ] } }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n//{$project: {__text:\"$description\",__value: \"$_id\",}},//\n{$project: {__text: { $concat: [ { $arrayElemAt: [\"$address\", 4]}, \"/\", \"$description\" ] },__value: \"$_id\",}},\n])",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Capteur",
+        "multi": true,
+        "name": "level5",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level4:raw}]}\n    }\n  },\n\n{\n  $lookup: {\n    from: \"realtimeData\",\n    localField: \"parcels\",\n    foreignField: \"_id\",\n    as: \"children\"\n  }\n},\n{\n  $unwind: {\n    path: \"$children\",\n  }\n},\n{\n  $addFields: { \"children.address\": { $split: [ \"$protocolSourceObjectAddress\", \"/\" ] } }\n},\n{\n  $replaceRoot: {\n    newRoot: \"$children\",\n  }\n},\n\n//{$project: {__text:\"$description\",__value: \"$_id\",}},//\n{$project: {__text: { $concat: [ { $arrayElemAt: [\"$address\", 4]}, \"/\", \"$description\" ] },__value: \"$_id\",}},\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level5:raw}]},\n\ntag:/Curve/,\n    }\n  },\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "courbes",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level5:raw}]},\n\ntag:/Curve/,\n    }\n  },\n\n{$project: {__text:\"$description\",__value: \"$_id\",}},\n\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level5:raw}]},\n\n$or:[\n{tag:/Indicator/},\n{origin: \"calculated\"}\n]\n    }\n  },\n\n//{$project: {__text:\"$description\",__value: \"$_id\",}},\n{$project: {__text:\"$tag\",__value: \"$_id\",}},\n//{$project: {__text: {$concat: [\"${level2:text}\",\"${level3:text}\",\"${level4:text}\", \"$description\"]},__value: \"$_id\",}},\n//{$project: {__text:\"$ungroupedDescription\",__value: \"$_id\",}},\n\n])",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "indicateurs",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {\n    \"$match\": {\n        _id: {$in: [${level5:raw}]},\n\n$or:[\n{tag:/Indicator/},\n{origin: \"calculated\"}\n]\n    }\n  },\n\n//{$project: {__text:\"$description\",__value: \"$_id\",}},\n{$project: {__text:\"$tag\",__value: \"$_id\",}},\n//{$project: {__text: {$concat: [\"${level2:text}\",\"${level3:text}\",\"${level4:text}\", \"$description\"]},__value: \"$_id\",}},\n//{$project: {__text:\"$ungroupedDescription\",__value: \"$_id\",}},\n\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Ligne 15",
+          "value": "Ligne 15"
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n  {$sample: {size: 1}},\n\n  {\n    $addFields: {\n      address: [\"${level1:text}\", \"${level2:text}\", \"${level3:text}\", \"${level4:text}\", \"${level5:text}\"]\n    }\n  },\n\n  {\n    // slice up to the first occurence of keyword 'All'\n    $project: {\n      _id: {\n        $slice: [\n          \"$address\",\n          {$indexOfArray: [\"$address\", \"All\", 0]},\n        ]\n      }\n    },\n  },\n\n  {\n    // no deeper than ${depth}\n    $project: {\n      _id: {\n        $slice: [\n          \"$_id\",\n          ${depth},\n        ]\n      }\n    },\n  },\n\n  {\n    // build the path: concatenate the array with \"/\" as a separator \n    // TODO is there really no \"join\" function in mongo ???\n    $project: {\n      _id: {\n        $reduce: {\n          input: \"$_id\",\n          initialValue: \"\",\n          in: { $concat : [ \"$$value\" ,\"/\", \"$$this\"] }\n        }\n      }\n    }\n  },\n\n  {\n    // remove leading \"/\"\n    $project: {\n      //_id: {$substr: [\"$_id\", 1, {$strLenBytes: \"$_id\"}]}\n      _id: { $replaceOne: {input: \"$_id\", find: \"/\", replacement: \"\"} }\n    }\n  },\n\n\n\n])",
+        "description": "[l1, l2, l3, l4, l5] => \"l1/l2/l3\"",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "pathPattern",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n  {$sample: {size: 1}},\n\n  {\n    $addFields: {\n      address: [\"${level1:text}\", \"${level2:text}\", \"${level3:text}\", \"${level4:text}\", \"${level5:text}\"]\n    }\n  },\n\n  {\n    // slice up to the first occurence of keyword 'All'\n    $project: {\n      _id: {\n        $slice: [\n          \"$address\",\n          {$indexOfArray: [\"$address\", \"All\", 0]},\n        ]\n      }\n    },\n  },\n\n  {\n    // no deeper than ${depth}\n    $project: {\n      _id: {\n        $slice: [\n          \"$_id\",\n          ${depth},\n        ]\n      }\n    },\n  },\n\n  {\n    // build the path: concatenate the array with \"/\" as a separator \n    // TODO is there really no \"join\" function in mongo ???\n    $project: {\n      _id: {\n        $reduce: {\n          input: \"$_id\",\n          initialValue: \"\",\n          in: { $concat : [ \"$$value\" ,\"/\", \"$$this\"] }\n        }\n      }\n    }\n  },\n\n  {\n    // remove leading \"/\"\n    $project: {\n      //_id: {$substr: [\"$_id\", 1, {$strLenBytes: \"$_id\"}]}\n      _id: { $replaceOne: {input: \"$_id\", find: \"/\", replacement: \"\"} }\n    }\n  },\n\n\n\n])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "3",
+          "value": "3"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "4kXFdV4Gk"
+        },
+        "definition": "select ${depth} +1",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "deeper",
+        "options": [],
+        "query": "select ${depth} +1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "level2",
+          "value": "level2"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "4kXFdV4Gk"
+        },
+        "definition": "select ${'level' || ${depth}}",
+        "description": "(${depth} === 3) => \"level3\"",
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "currentLevel",
+        "options": [],
+        "query": "select ${'level' || ${depth}}",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "Europe/Paris",
+  "title": "page ACCUEIL",
+  "uid": "UpOlTCiVk",
+  "version": 33,
+  "weekStart": ""
+}

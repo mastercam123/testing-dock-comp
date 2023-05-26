@@ -1,0 +1,6 @@
+version: '3.9'
+services:
+  json-scada-conf-populator:
+    build: docker/json-scada-conf-populator
+    #image: {{ env['ECR_URL'] }}:{{ env['COMPANY_IDENTIFIER'] }}-{{ env['APPLICATION_NAME'] }}-json-scada-conf-populator-{{ env['VMON_SERVER_VERSION'] }}
+    image: {{ env['user'] }}:{{ env['NAME'] }}-{{ env['AWS_PROFILE'] }}-json-scada-conf-populator

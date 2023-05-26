@@ -1,0 +1,15 @@
+name: Pipeline for production environment
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  call-reusable-workflow-v-mon:
+    uses: ./.github/workflows/aws-docker_image_builder_workflow.yml
+    with:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      ECR_URL: ${{ vars.ECR_URL }}
+      ECR_PUSH_ROLE: ${{ vars.ECR_PUSH_ROLE }}
+      COMPANY_IDENTIFIER: ${{ vars.COMPANY_IDENTIFIER }} 
+      APPLICATION_NAME: ${{ vars.APPLICATION_NAME }} 
+

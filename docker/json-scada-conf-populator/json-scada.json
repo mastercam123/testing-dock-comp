@@ -1,0 +1,5 @@
+{
+  "nodeName": "${JSON_SCADA_NODE_NAME}",
+  "mongoConnectionString": "mongodb://${MONGODB_HOSTNAME}:27017/${JSON_SCADA_MONGODB_NAME}?replicaSet=rs1",
+  "mongoDatabaseName": "${JSON_SCADA_MONGODB_NAME}"
+}

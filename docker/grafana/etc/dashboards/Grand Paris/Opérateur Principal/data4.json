@@ -1,0 +1,1517 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 2,
+  "id": 3,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Accueil",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/UpOlTCiVk/page-accueil?orgId=1&refresh=10s&var-teams=All"
+    }
+  ],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "links": [
+            {
+              "title": "sélectionner cet événement",
+              "url": "/d/uxzRolWVz/page-data\n?orgId=${__org}\n&var-level1=﻿${__data.fields.level1}\n&var-level2﻿=${__data.fields.level2}\n&var-level3﻿=${__data.fields.level3}\n&var-level4=﻿${__data.fields.level4}\n&var-teams=All\n&${view_status:queryparam}\n&${protocolSourceConnectionNumber:queryparam}\n&${allowed_objects:queryparam}\n&from=${__data.fields.from}\n&to=${__data.fields.to}\n&var-metrics=All"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "invalid"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "En service"
+                      },
+                      "1": {
+                        "index": 1,
+                        "text": "Hors service"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "alarmed"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "OK"
+                      },
+                      "1": {
+                        "index": 1,
+                        "text": "En Alarme"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "concat_ws"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 364
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "protocolsourceobjectaddress"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 506
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Ligne"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level2"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Gare"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level3"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "AdV"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "level4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "PMDiagBox"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/from|to/"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 175
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AdV"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 106
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PMDiagBox"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 152
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ligne"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 94
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 44,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "time"
+          }
+        ]
+      },
+      "pluginVersion": "9.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "description",
+          "rawQuery": true,
+          "rawSql": "WITH select_pmdiagbox_history AS (\n  SELECT\n    time_tag_at_source AS \"time\",\n    time_tag_at_source AS \"from\",\n    protocolSourceObjectAddress,\n    time_tag_at_source + INTERVAL '6 seconds' AS \"to\", -- TODO\n    split_part(protocolSourceObjectAddress, '/', 2) level1,\n    split_part(protocolSourceObjectAddress, '/', 3) level2,\n    split_part(protocolSourceObjectAddress, '/', 4) level3,\n    split_part(protocolSourceObjectAddress, '/', 5) level4,\n    -- 'R62' AS motorType,\n    -- split_part(protocolSourceObjectAddress, '/', 6) level5,\n    ${view_status}\n  FROM\n    hist_view\n  WHERE\n    protocolSourceObjectAddress ~ '^[^\\/]+(\\/[^\\/]+){4}$'\n    AND protocolsourceconnectionnumber = ${protocolSourceConnectionNumber:singlequote}\n)\nselect\n  *\nfrom\n  select_pmdiagbox_history -- $__timeFilter(time_tag_at_source) AND\n  --  tag IN (${tag:sqlstring}) AND\n  WHERE \n  -- level1 = ${focus_level1:singlequote}\n  -- AND level2 = ${focus_level2:singlequote}\n  -- AND level3 = ${focus_level3:singlequote}\n  -- AND level4 = ${focus_level4:singlequote}\n    level1 IN (${level1:singlequote})\n  AND level2 IN (${level2:singlequote})\n  AND level3 IN (${level3:singlequote})\n  AND level4 IN (${level4:singlequote})\n\nORDER BY\n  1 DESC\nLIMIT\n  1000",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "${view_status}"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamptz",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "tag",
+                "IN",
+                "(${tag:sqlstring})"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "protocolsourceconnectionnumber",
+                "=",
+                "'$protocolSourceConnectionNumber'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "group": [],
+          "hide": true,
+          "metricColumn": "description",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_tag_at_source AS \"time\",\n  time_tag_at_source AS \"from\",\n  protocolSourceObjectAddress,\n  time_tag_at_source + INTERVAL '6 seconds' AS \"to\",\n  -- protocolSourceObjectAddress,\n  -- split_part(protocolSourceObjectAddress, '/', 1) level0,\n  split_part(protocolSourceObjectAddress, '/', 2) level1,\n  split_part(protocolSourceObjectAddress, '/', 3) level2,\n  split_part(protocolSourceObjectAddress, '/', 4) level3,\n  split_part(protocolSourceObjectAddress, '/', 5) level4,\n  'R62' AS motorType,\n  -- split_part(protocolSourceObjectAddress, '/', 6) level5,\n  ${view_status}\nFROM\n  hist_view\nWHERE\n  -- $__timeFilter(time_tag_at_source) AND\n  --  tag IN (${tag:sqlstring}) AND\n  level1 = ${focus_level1:singlequote}\n  AND regexp_match(\n    protocolSourceObjectAddress,\n    '^[^\\/]+(\\/[^\\/]+){4}$'\n  ) IS NOT NULL\n  AND protocolsourceconnectionnumber = '$protocolSourceConnectionNumber'\nORDER BY\n  1 DESC\n  LIMIT 1000",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "${view_status}"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "hist_view",
+          "timeColumn": "time_tag",
+          "timeColumnType": "timestamptz",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "tag",
+                "IN",
+                "(${tag:sqlstring})"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "protocolsourceconnectionnumber",
+                "=",
+                "'$protocolSourceConnectionNumber'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "from"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "to"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 10000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 Channel 4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Hygrométrie mécanisme moteur"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 TOR 3"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Niveau Huile"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 TOR 4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Détection courant"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 Channel 1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Pression Gauche"
+              },
+              {
+                "id": "unit",
+                "value": "pressurebar"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 Channel 2"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Pression Droite"
+              },
+              {
+                "id": "unit",
+                "value": "pressurebar"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accel X"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Accélération X"
+              },
+              {
+                "id": "unit",
+                "value": "accG"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accel Y"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Accélération Y"
+              },
+              {
+                "id": "unit",
+                "value": "accG"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accel Z"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Accélération Z"
+              },
+              {
+                "id": "unit",
+                "value": "accG"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Humidity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Hygrométrie"
+              },
+              {
+                "id": "unit",
+                "value": "humidity"
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 100
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperature"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Température"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "custom.axisCenteredZero",
+                "value": true
+              },
+              {
+                "id": "custom.axisSoftMin"
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:E0 Channel 3"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tension"
+              },
+              {
+                "id": "unit",
+                "value": "volt"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:E0 Channel 4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Courant"
+              },
+              {
+                "id": "unit",
+                "value": "mamp"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:E0 Channel 2"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 10,
+        "x": 12,
+        "y": 0
+      },
+      "id": 54,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "WITH aaa AS (\r\n  WITH spread_dataset AS (\r\n    SELECT\r\n      rd.tag,\r\n      (string_to_array(rd.tag, '/'))[4] as eui64,\r\n      h.time_tag_at_source,\r\n      json_data ->> 'unit' as unit,\r\n      ordinality,\r\n      flags,\r\n      ${metricNames:doublequote}\r\n    FROM\r\n      hist h\r\n      JOIN realtime_data rd on h.tag = rd.tag,\r\n      ROWS\r\n    FROM\r\n      (\r\n        jsonb_to_recordset(h.value_json) as (${metricTypes:raw})\r\n      ) WITH ordinality\r\n    where\r\n      h.time_tag_at_source = '${__from:date:iso}'\r\n      AND rd.tag in (${focusMetrics:sqlstring})\r\n  )\r\n  SELECT\r\n    time_tag_at_source + make_interval(\r\n      secs => 1 / (json_data ->> 'samplingRate') :: numeric\r\n    ) * (ordinality - 1) AS time,\r\n    realtime_data.json_data ->> 'unit' as unit,\r\n    eui64,\r\n    substring(eui64,0,18) as eui64_root,\r\n    ${metricNames:doublequote}\r\n  FROM\r\n    spread_dataset\r\n    JOIN realtime_data ON spread_dataset.tag = realtime_data.tag\r\n  where\r\n    spread_dataset.flags | b'00000000' = b'00000000'\r\n  order by\r\n    1\r\n)\r\n-- select * from aaa\r\n\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'Channel 1' as metric,\r\n  -- 'Channel 1' as metric,\r\n  \"Channel 1\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Channel 1\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'Channel 2' as metric,\r\n  -- 'Channel 2' as metric,\r\n  \"Channel 2\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Channel 2\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'Channel 3' as metric,\r\n  -- 'Channel 3' as metric,\r\n  \"Channel 3\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Channel 3\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'Channel 4' as metric,\r\n  -- 'Channel 4' as metric,\r\n  \"Channel 4\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Channel 4\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'TOR 1' as metric,\r\n  -- 'TOR 1' as metric,\r\n  \"TOR 1\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"TOR 1\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'TOR 2' as metric,\r\n  -- 'TOR 2' as metric,\r\n  \"TOR 2\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"TOR 2\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  eui64_root || ' ' || 'TOR 3' as metric,\r\n  -- 'TOR 3' as metric,\r\n  \"TOR 3\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"TOR 3\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Motor Current' as metric,\r\n  \"Motor Current\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Motor Current\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Temperature' as metric,\r\n  \"Temperature\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Temperature\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Humidity' as metric,\r\n  \"Humidity\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Humidity\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Accel X' as metric,\r\n  \"Accel X\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Accel X\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Accel Y' as metric,\r\n  \"Accel Y\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Accel Y\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Accel Z' as metric,\r\n  \"Accel Z\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Accel Z\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'RMS Tension' as metric,\r\n  \"RMS Tension\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"RMS Tension\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'RMS Current' as metric,\r\n  \"RMS Current\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"RMS Current\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Phase Shift' as metric,\r\n  \"Phase Shift\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Phase Shift\" is not null\r\nunion\r\nselect\r\n  time,\r\n  eui64,\r\n  'Board' as metric,\r\n  \"Board\" as value,\r\n  unit\r\nfrom\r\n  aaa\r\nwhere\r\n  \"Board\" is not null\r\n\r\n\r\n---------------------------------------------------\r\n\r\n-- uncoment the following dummy metric so they can appear in the \"Overrides\" section, so you can set the unit, display name etc\r\n\r\n-- union select now(), '60:95:CE:00:10:E0' as eui64, '60:95:CE:00:10:E0' || ' ' || 'Channel 3' as metric, 555 as value, 'V' as unit\r\n-- union select now(), '60:95:CE:00:10:E0' as eui64, '60:95:CE:00:10:E0' || ' ' || 'Channel 4' as metric, 555 as value, 'mA' as unit\r\n\r\n-- union select now(), '60:95:CE:00:10:D0' as eui64, '60:95:CE:00:10:D0' || ' ' || 'Channel 4' as metric, 555 as value, '%Hr' as unit\r\n-- union select now(), '60:95:CE:00:10:D0' as eui64, '60:95:CE:00:10:D0' || ' ' || 'TOR 3' as metric, 555 as value, '' as unit\r\n-- union select now(), '60:95:CE:00:10:D0' as eui64, '60:95:CE:00:10:D0' || ' ' || 'TOR 4' as metric, 555 as value, '' as unit\r\n\r\n\r\n\r\n---------------------------------------------------\r\n\r\n\r\n\r\norder by\r\n  1",
+          "refId": "CURVE",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "hide": true,
+          "rawQuery": true,
+          "rawSql": "WITH spread_dataset AS (\r\n  SELECT\r\n    tag,\r\n    hist.time_tag_at_source,\r\n    -- samplingRate,\r\n    -- time_tag_at_source_invalid,\r\n    -- flags,\r\n    ordinality,\r\n    flags,\r\n    -- \"Déplacement console\",\r\n    -- \"Humidité\",\r\n    -- \"Température air\",\r\n    -- \"Température rail\"\r\n    -- \"channel_1\",\r\n    -- \"channel_2\",\r\n    -- \"channel_3\",\r\n    -- \"channel_4\",\r\n    -- \"real_power\"\r\n\t\r\n\t-- \"Accel X\",\r\n\t-- \"Accel Y\",\r\n\t-- \"Accel Z\",\r\n  \"Temperature\",\r\n  \"Humidity\" --,\r\n\t-- \"Channel 1\",\r\n\t-- \"Channel 2\",\r\n\t-- \"Channel 3\",\r\n\t-- \"Channel 4\",\r\n\t-- \"Motor Current\"\r\n\t\r\n  FROM\r\n    hist,\r\n    ROWS\r\n  FROM\r\n    (\r\n      jsonb_to_recordset(hist.value_json) as (\r\n        -- \"channel_1\" numeric,\r\n\t\t-- \"channel_2\" numeric,\r\n\t\t-- \"channel_3\" numeric,\r\n\t\t-- \"channel_4\" numeric,\r\n\t\t-- \"real_power\" numeric\r\n        -- \"Déplacement console\" numeric,\r\n        -- \"Humidité\" numeric,\r\n        -- \"Température air\" numeric,\r\n        -- \"Température rail\" numeric\r\n\t\t\t-- \"Accel X\" numeric,\r\n\t\t\t-- \"Accel Y\" numeric,\r\n\t\t\t-- \"Accel Z\" numeric,\r\n      \"Temperature\" numeric,\r\n      \"Humidity\" numeric --,\r\n\t\t\t-- \"Channel 1\" numeric,\r\n\t\t\t-- \"Channel 2\" numeric,\r\n\t\t\t-- \"Channel 3\" numeric,\r\n\t\t\t-- \"Channel 4\" numeric,\r\n\t\t\t-- \"Motor Current\" numeric\r\n\r\n      )\r\n    ) WITH ordinality\r\n  where\r\n    -- $__timeFilter(hist.time_tag_at_source)\r\n    hist.time_tag_at_source = '${__from:date:iso}' AND hist.time_tag_at_source <= TIMESTAMP '${__from:date:iso}' + INTERVAL '60 seconds'\r\n    -- AND time_tag_at_source_invalid = 0\r\n    -- AND invalid = 0\r\n    -- AND get_bit(hist.flags, 0) = 0 /* TODO index?*/\r\n    -- AND get_bit(hist.flags, 1) = 0 /* TODO index?*/\r\n\r\n    -- AND tag LIKE '${tagPrefix}%'\r\n    AND tag in (${focusMetrics:sqlstring})\r\n)\r\nSELECT\r\n time_tag_at_source + make_interval(secs => 1/ (json_data ->> 'samplingRate') :: numeric) * (ordinality - 1) AS time,\r\n  \r\n  \r\n\t-- \"channel_1\",\r\n    -- \"channel_2\",\r\n    -- \"channel_3\",\r\n    -- \"channel_4\",\r\n    -- \"real_power\"\r\n\t-- \"Accel X\",\r\n\t-- \"Accel Y\",\r\n\t-- \"Accel Z\",\r\n  \"Temperature\",\r\n  \"Humidity\" --,\r\n\t-- \"Channel 1\",\r\n\t-- \"Channel 2\",\r\n\t-- \"Channel 3\",\r\n\t-- \"Channel 4\",\r\n\t-- \"Motor Current\"\r\n\r\n\r\n  -- \"Déplacement console\",\r\n  -- \"Humidité\",\r\n  -- \"Température air\",\r\n  -- \"Température rail\"\r\nFROM\r\n  spread_dataset\r\n  JOIN realtime_data ON spread_dataset.tag = realtime_data.tag\r\n where\r\n   spread_dataset.flags | b'00000000' = b'00000000'\r\norder by\r\n  1",
+          "refId": "INDICATORS",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Courbes ${level1} / ${level2} / ${level3} / ${level4}",
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "metric"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 Channel 4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Hygrométrie mécanisme moteur"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 TOR 3"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Niveau Huile"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 TOR 4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Détection courant"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 Channel 1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Pression Gauche"
+              },
+              {
+                "id": "unit",
+                "value": "pressurebar"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:D0 Channel 2"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Pression Droite"
+              },
+              {
+                "id": "unit",
+                "value": "pressurebar"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accel X"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Accélération X"
+              },
+              {
+                "id": "unit",
+                "value": "accG"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accel Y"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Accélération Y"
+              },
+              {
+                "id": "unit",
+                "value": "accG"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accel Z"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Accélération Z"
+              },
+              {
+                "id": "unit",
+                "value": "accG"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Humidity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Hygrométrie"
+              },
+              {
+                "id": "unit",
+                "value": "humidity"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Temperature"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Température"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:E0 Channel 3"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tension"
+              },
+              {
+                "id": "unit",
+                "value": "volt"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "60:95:CE:00:10:E0 Channel 4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Courant"
+              },
+              {
+                "id": "unit",
+                "value": "mamp"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 2,
+        "x": 22,
+        "y": 0
+      },
+      "id": 49,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 54,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Indicateurs",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Humidity",
+                "Temperature"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "stat"
+    }
+  ],
+  "refresh": false,
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "frser-sqlite-datasource",
+          "uid": "xRsfehEnz"
+        },
+        "definition": "select\n\tt.id\nfrom\n\tteam t\nJOIN team_member tm ON\n\tt.id = tm.team_id\nJOIN user u on\n\tu.id = tm.user_id\nWHERE\n\tu.email = '${__user.email}'\n\tAND u.org_id = ${__org}\n\tAND u.is_disabled IS FALSE\n/* TODO should admin users belong to every team? */",
+        "description": "teams current user belongs to",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Teams",
+        "multi": true,
+        "name": "teams",
+        "options": [],
+        "query": "select\n\tt.id\nfrom\n\tteam t\nJOIN team_member tm ON\n\tt.id = tm.team_id\nJOIN user u on\n\tu.id = tm.user_id\nWHERE\n\tu.email = '${__user.email}'\n\tAND u.org_id = ${__org}\n\tAND u.is_disabled IS FALSE\n/* TODO should admin users belong to every team? */",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Physique",
+          "value": "invalid"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "view_status",
+        "options": [
+          {
+            "selected": true,
+            "text": "Physique",
+            "value": "invalid"
+          },
+          {
+            "selected": false,
+            "text": "Logique",
+            "value": "alarmed"
+          }
+        ],
+        "query": "Physique : invalid,Logique : alarmed",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-custom-mongodb-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.permissions.aggregate([\n  {\"$match\": {\"teamId\": {\"$in\": [${teams:raw}]}}},\n  {\"$unwind\": \"$realtimeDataId\"},\n{\"$project\": {\"_id\": \"$realtimeDataId\"}},\n{\"$sort\": {\"_id\": 1}}\n])\n",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "allowed_objects",
+        "options": [],
+        "query": "db.permissions.aggregate([\n  {\"$match\": {\"teamId\": {\"$in\": [${teams:raw}]}}},\n  {\"$unwind\": \"$realtimeDataId\"},\n{\"$project\": {\"_id\": \"$realtimeDataId\"}},\n{\"$sort\": {\"_id\": 1}}\n])\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "8888",
+          "value": "8888"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "protocolSourceConnectionNumber",
+        "options": [
+          {
+            "selected": false,
+            "text": "1200",
+            "value": "1200"
+          },
+          {
+            "selected": true,
+            "text": "8888",
+            "value": "8888"
+          }
+        ],
+        "query": "1200,8888",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "description": "",
+        "hide": 2,
+        "name": "level1",
+        "query": "",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "hide": 2,
+        "label": "",
+        "name": "level2",
+        "query": "",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "hide": 2,
+        "name": "level3",
+        "query": "",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "hide": 2,
+        "name": "level4",
+        "query": "",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "grafana-mongodb-opensource-datasource",
+          "uid": "ptPu0P17k"
+        },
+        "definition": "db.realtimeData.aggregate([\n    {\n        $match: {\n            $and: [\n                { tag: { $regex: \"${level1}/${level2}/${level3}/${level4}\" } }\n            ]\n        },\n    },\n    {\n        $lookup: {\n            from: \"realtimeData\",\n            localField: \"parcels\",\n            foreignField: \"_id\",\n            as: \"children\"\n        }\n    },\n    { $unwind: { path: \"$children\" } },\n    { $replaceRoot: { newRoot: { _id: \"$children.tag\" } } },\n\n])\n\n",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "focusMetrics",
+        "options": [],
+        "query": "db.realtimeData.aggregate([\n    {\n        $match: {\n            $and: [\n                { tag: { $regex: \"${level1}/${level2}/${level3}/${level4}\" } }\n            ]\n        },\n    },\n    {\n        $lookup: {\n            from: \"realtimeData\",\n            localField: \"parcels\",\n            foreignField: \"_id\",\n            as: \"children\"\n        }\n    },\n    { $unwind: { path: \"$children\" } },\n    { $replaceRoot: { newRoot: { _id: \"$children.tag\" } } },\n\n])\n\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "metricNames",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Channel 1",
+            "value": "Channel 1"
+          },
+          {
+            "selected": false,
+            "text": "Channel 2",
+            "value": "Channel 2"
+          },
+          {
+            "selected": false,
+            "text": "Channel 3",
+            "value": "Channel 3"
+          },
+          {
+            "selected": false,
+            "text": "Channel 4",
+            "value": "Channel 4"
+          },
+          {
+            "selected": false,
+            "text": "TOR 1",
+            "value": "TOR 1"
+          },
+          {
+            "selected": false,
+            "text": "TOR 2",
+            "value": "TOR 2"
+          },
+          {
+            "selected": false,
+            "text": "TOR 3",
+            "value": "TOR 3"
+          },
+          {
+            "selected": false,
+            "text": "Motor Current",
+            "value": "Motor Current"
+          },
+          {
+            "selected": false,
+            "text": "Temperature",
+            "value": "Temperature"
+          },
+          {
+            "selected": false,
+            "text": "Humidity",
+            "value": "Humidity"
+          },
+          {
+            "selected": false,
+            "text": "Accel X",
+            "value": "Accel X"
+          },
+          {
+            "selected": false,
+            "text": "Accel Y",
+            "value": "Accel Y"
+          },
+          {
+            "selected": false,
+            "text": "Accel Z",
+            "value": "Accel Z"
+          },
+          {
+            "selected": false,
+            "text": "RMS Tension",
+            "value": "RMS Tension"
+          },
+          {
+            "selected": false,
+            "text": "RMS Current",
+            "value": "RMS Current"
+          },
+          {
+            "selected": false,
+            "text": "Phase Shift",
+            "value": "Phase Shift"
+          },
+          {
+            "selected": false,
+            "text": "Board",
+            "value": "Board"
+          }
+        ],
+        "query": "Channel 1,Channel 2,Channel 3,Channel 4,TOR 1,TOR 2,TOR 3,Motor Current,Temperature,Humidity,Accel X,Accel Y,Accel Z,RMS Tension,RMS Current,Phase Shift,Board",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "4kXFdV4Gk"
+        },
+        "definition": "select '\"' || unnest || '\"' || ' numeric'\nfrom unnest(array[${metricNames:singlequote}])\n",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "metricTypes",
+        "options": [],
+        "query": "select '\"' || unnest || '\"' || ' numeric'\nfrom unnest(array[${metricNames:singlequote}])\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "4kXFdV4Gk"
+        },
+        "definition": "SELECT regexp_replace(\n\ttag, \n\t'.+\\/Device Sensors\\|(.+)\\|(Curve|Indicator)\\|Value',\n\t'\\1'\n)\nFROM realtime_data\nWHERE tag IN (${focusMetrics:singlequote})",
+        "description": "keep the relevant part of a metric eg:\n'Humidity'\nfrom\n'MQTT:1200:spBv1.0/Vossloh/00:00:00:00:00:19:00:00/00:00:00:00:00:19:02:00/Device Sensors|Humidity|Curve|Value'",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "focusMetricNames",
+        "options": [],
+        "query": "SELECT regexp_replace(\n\ttag, \n\t'.+\\/Device Sensors\\|(.+)\\|(Curve|Indicator)\\|Value',\n\t'\\1'\n)\nFROM realtime_data\nWHERE tag IN (${focusMetrics:singlequote})",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "4kXFdV4Gk"
+        },
+        "definition": "SELECT '\"' || unnest || '\"' || ' numeric'\nFROM unnest(array[${focusMetricNames:singlequote}])\n",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "focusMetricTypes",
+        "options": [],
+        "query": "SELECT '\"' || unnest || '\"' || ' numeric'\nFROM unnest(array[${focusMetricNames:singlequote}])\n",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "indicateurs",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "Temperature",
+            "value": "Temperature"
+          },
+          {
+            "selected": false,
+            "text": "Humidity",
+            "value": "Humidity"
+          }
+        ],
+        "query": "Temperature, Humidity",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "2023-05-02T08:13:10.347Z",
+    "to": "2023-05-02T08:13:16.347Z"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "Europe/Paris",
+  "title": "page DATA",
+  "uid": "uxzRolWVz",
+  "version": 181,
+  "weekStart": ""
+}

@@ -1,0 +1,1026 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 2,
+  "id": 2,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [
+        "status"
+      ],
+      "targetBlank": false,
+      "title": "Alertes / Prévisions",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "4kXFdV4Gk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 64,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 86400000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Température air/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Température air"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Humidité/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "humidity"
+              },
+              {
+                "id": "displayName",
+                "value": "Humidité"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Température rail/"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Température rail"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Température/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "metric",
+          "rawQuery": true,
+          "rawSql": "WITH spread_dataset AS (\n  SELECT\n    tag,\n    hist.time_tag_at_source,\n    -- samplingRate,\n    -- time_tag_at_source_invalid,\n    flags,\n    ordinality,\n    \"Déplacement console\",\n    \"Humidité\",\n    \"Température air\",\n    \"Température rail\"\n  FROM\n    hist,\n    ROWS\n  FROM\n    (\n      jsonb_to_recordset(hist.value_json) as (\n        \"Déplacement console\" numeric,\n        \"Humidité\" numeric,\n        \"Température air\" numeric,\n        \"Température rail\" numeric\n      )\n    ) WITH ordinality\n  where\n    $__timeFilter(hist.time_tag_at_source)\n    -- AND time_tag_at_source_invalid = 0\n    -- AND invalid = 0\n    -- AND get_bit(hist.flags, 0) = 0 /* TODO index?*/\n    -- AND get_bit(hist.flags, 1) = 0 /* TODO index?*/\n    AND tag IN (\n      'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|Déplacement console|Curve|Value',\n      'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|Humidité|Curve|Value',\n      'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|Température air|Curve|Value',\n      'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|Température rail|Curve|Value'\n    )\n)\nSELECT\n  time_tag_at_source + make_interval(secs => (json_data ->> 'samplingRate') :: numeric) * ordinality AS time,\n  -- time_tag_at_source + make_interval(secs => ${samplingRate}) * ordinality AS time,\n  flags,\n  \"Déplacement console\",\n  \"Humidité\",\n  \"Température air\",\n  \"Température rail\"\nFROM\n  spread_dataset\n  JOIN realtime_data ON spread_dataset.tag = realtime_data.tag\nwhere\n  spread_dataset.flags | b'00000000' = b'00000000'\norder by\n  1",
+          "refId": "PRIMARY",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "grafana_hist",
+          "timeColumn": "time_tag_at_source",
+          "timeColumnType": "timestamptz",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "metric",
+                "LIKE",
+                "'%SMV%'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "metric",
+                "LIKE",
+                "'%Value'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  time_tag_at_source AS \"time\",\r\n  value AS \"v1\"\r\nFROM\r\n  hist_view\r\nWHERE\r\n  $__timeFilter(time_tag_at_source)\r\n  AND tag = 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|V|Indicator|Value'\r\n  AND round(10 *(round(value :: numeric, 1) - round(value))) = 1\r\nORDER BY\r\n  1,\r\n  2",
+          "refId": "V1",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  time_tag_at_source AS \"time\",\r\n  value AS \"v2\"\r\nFROM\r\n  hist_view\r\nWHERE\r\n  $__timeFilter(time_tag_at_source)\r\n  AND tag = 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|V|Indicator|Value'\r\n  AND round(10 *(round(value :: numeric, 1) - round(value))) = 2\r\nORDER BY\r\n  1,\r\n  2",
+          "refId": "V2",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "4kXFdV4Gk"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "select\r\n  time_tag_at_source AS \"time\",\r\n  tag AS metric,\r\n  value\r\nfrom\r\n  hist_view\r\nWHERE\r\n  $__timeFilter(hist_view.time_tag_at_source)\r\n  AND tag IN (\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|DeltaD|Indicator|Value',\r\n    'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|IGD1|Indicator|Value'\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|IGD|Indicator|Value',\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|LMax|Indicator|Value',\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|LMin|Indicator|Value',\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|P1|Indicator|Value',\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|P2|Indicator|Value',\r\n    -- 'MQTT:1200:spBv1.0/${SPARKPLUG_GROUP_ID}/11:00:00:00:01:02:00:00/${device},0/Device Sensors|V|Indicator|Value'\r\n  )\r\n  AND invalid = 0\r\n  AND time_tag_at_source_invalid = 0\r\nORDER BY\r\n  1,\r\n  2",
+          "refId": "INDICATORS",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Températures et Humidité -- ${device}",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Time",
+                "Humidité",
+                "Température air",
+                "Température rail"
+              ],
+              "pattern": ".*(Température|Humidité).*"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 64,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 86400000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Déplacement console/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Déplacement console"
+              },
+              {
+                "id": "unit",
+                "value": "lengthmm"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 2,
+          "refId": "A",
+          "withTransforms": false
+        }
+      ],
+      "title": "Déplacement console -- ${device}",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Time",
+                "Déplacement console"
+              ],
+              "pattern": "/\\|Déplacement console\\|/"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 64,
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "V1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              },
+              {
+                "id": "displayName",
+                "value": "Vitesse trains (simple rame)"
+              },
+              {
+                "id": "max",
+                "value": 320
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "V2"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              },
+              {
+                "id": "displayName",
+                "value": "Vitesse trains (double rame)"
+              },
+              {
+                "id": "max",
+                "value": 320
+              },
+              {
+                "id": "min",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "INDICATORS"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 1
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1.9
+                    },
+                    {
+                      "color": "super-light-red",
+                      "value": 3.2
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 4
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.thresholdsStyle",
+                "value": {
+                  "mode": "area"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Indice de vibration"
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              },
+              {
+                "id": "custom.axisSoftMax",
+                "value": 4
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 2,
+          "refId": "A"
+        }
+      ],
+      "title": "Vitesse  -- ${device}",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Time",
+                "v1",
+                "v2",
+                "time"
+              ],
+              "pattern": "/IGD1/"
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [
+    "graphs"
+  ],
+  "templating": {
+    "list": [
+      {
+        "hide": 2,
+        "label": "Indice de vibration",
+        "name": "IGD",
+        "query": "IGD1",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "6327c",
+          "value": "84"
+        },
+        "description": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Équipements",
+        "multi": false,
+        "name": "device",
+        "options": [
+          {
+            "selected": false,
+            "text": "5328c",
+            "value": "0"
+          },
+          {
+            "selected": false,
+            "text": "5328a",
+            "value": "1"
+          },
+          {
+            "selected": false,
+            "text": "5327a",
+            "value": "3"
+          },
+          {
+            "selected": false,
+            "text": "5327c",
+            "value": "4"
+          },
+          {
+            "selected": false,
+            "text": "5205a",
+            "value": "11"
+          },
+          {
+            "selected": false,
+            "text": "5205c",
+            "value": "12"
+          },
+          {
+            "selected": false,
+            "text": "5206a",
+            "value": "13"
+          },
+          {
+            "selected": false,
+            "text": "5206c",
+            "value": "14"
+          },
+          {
+            "selected": false,
+            "text": "5227a",
+            "value": "21"
+          },
+          {
+            "selected": false,
+            "text": "5227c",
+            "value": "22"
+          },
+          {
+            "selected": false,
+            "text": "5228a",
+            "value": "23"
+          },
+          {
+            "selected": false,
+            "text": "5228c",
+            "value": "24"
+          },
+          {
+            "selected": false,
+            "text": "5527a",
+            "value": "31"
+          },
+          {
+            "selected": false,
+            "text": "5527c",
+            "value": "32"
+          },
+          {
+            "selected": false,
+            "text": "5528a",
+            "value": "33"
+          },
+          {
+            "selected": false,
+            "text": "5528c",
+            "value": "34"
+          },
+          {
+            "selected": false,
+            "text": "5727a",
+            "value": "41"
+          },
+          {
+            "selected": false,
+            "text": "5727c",
+            "value": "42"
+          },
+          {
+            "selected": false,
+            "text": "5728a",
+            "value": "43"
+          },
+          {
+            "selected": false,
+            "text": "5728c",
+            "value": "44"
+          },
+          {
+            "selected": false,
+            "text": "6105a",
+            "value": "51"
+          },
+          {
+            "selected": false,
+            "text": "6105c",
+            "value": "52"
+          },
+          {
+            "selected": false,
+            "text": "6106a",
+            "value": "53"
+          },
+          {
+            "selected": false,
+            "text": "6106c",
+            "value": "54"
+          },
+          {
+            "selected": false,
+            "text": "6206a",
+            "value": "61"
+          },
+          {
+            "selected": false,
+            "text": "6206c",
+            "value": "62"
+          },
+          {
+            "selected": false,
+            "text": "6231a",
+            "value": "63"
+          },
+          {
+            "selected": false,
+            "text": "6231c",
+            "value": "64"
+          },
+          {
+            "selected": false,
+            "text": "6305a",
+            "value": "71"
+          },
+          {
+            "selected": false,
+            "text": "6305c",
+            "value": "72"
+          },
+          {
+            "selected": false,
+            "text": "6306a",
+            "value": "73"
+          },
+          {
+            "selected": false,
+            "text": "6306c",
+            "value": "74"
+          },
+          {
+            "selected": false,
+            "text": "6322a",
+            "value": "81"
+          },
+          {
+            "selected": false,
+            "text": "6322c",
+            "value": "82"
+          },
+          {
+            "selected": false,
+            "text": "6327a",
+            "value": "83"
+          },
+          {
+            "selected": true,
+            "text": "6327c",
+            "value": "84"
+          },
+          {
+            "selected": false,
+            "text": "6805a",
+            "value": "91"
+          },
+          {
+            "selected": false,
+            "text": "6805c",
+            "value": "92"
+          },
+          {
+            "selected": false,
+            "text": "6806a",
+            "value": "93"
+          },
+          {
+            "selected": false,
+            "text": "6806c",
+            "value": "94"
+          },
+          {
+            "selected": false,
+            "text": "6006a",
+            "value": "101"
+          },
+          {
+            "selected": false,
+            "text": "6006c",
+            "value": "102"
+          }
+        ],
+        "query": "5328c\t:\t0\t,5328a\t:\t1\t,5327a\t:\t3\t,5327c\t:\t4\t,5205a\t:\t11\t,5205c\t:\t12\t,5206a\t:\t13\t,5206c\t:\t14\t,5227a\t:\t21\t,5227c\t:\t22\t,5228a\t:\t23\t,5228c\t:\t24\t,5527a\t:\t31\t,5527c\t:\t32\t,5528a\t:\t33\t,5528c\t:\t34\t,5727a\t:\t41\t,5727c\t:\t42\t,5728a\t:\t43\t,5728c\t:\t44\t,6105a\t:\t51\t,6105c\t:\t52\t,6106a\t:\t53\t,6106c\t:\t54\t,6206a\t:\t61\t,6206c\t:\t62\t,6231a\t:\t63\t,6231c\t:\t64\t,6305a\t:\t71\t,6305c\t:\t72\t,6306a\t:\t73\t,6306c\t:\t74\t,6322a\t:\t81\t,6322c\t:\t82\t,6327a\t:\t83\t,6327c\t:\t84\t,6805a\t:\t91\t,6805c\t:\t92\t,6806a\t:\t93\t,6806c\t:\t94\t,6006a\t:\t101\t,6006c\t:\t102\t",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "hide": 2,
+        "name": "SPARKPLUG_GROUP_ID",
+        "query": "SMV",
+        "skipUrlSync": false,
+        "type": "constant"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6M",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "MESEA",
+  "uid": "QRCdtkhVk",
+  "version": 6,
+  "weekStart": ""
+}

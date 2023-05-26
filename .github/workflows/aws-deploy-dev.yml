@@ -1,0 +1,39 @@
+name: Pipeline for development environment
+on:
+  push:
+    branches: [ main ]
+  
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      v-mon-version: ${{ steps.filter.outputs.v-mon-version }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        base: ${{ github.ref_name }}
+        filters: |
+          v-mon-version:
+            - 'docker/grafana/**'
+            - 'docker/db-mongorsn1/**'
+            - 'docker/timescale/**'
+            - 'docker/driver-mqtt_sprarkplug/**'
+            - 'docker/data_processor-main/**'
+            - 'docker/data_processor-vmon/**'
+            - 'docker/db_processor-historian/**'
+            - 'docker/db_processor-realtime/**'
+            - 'mongodb-grafana/**'
+            - 'json-scada/**'
+            - 'docker/mosquitto/**'
+      
+  call-reusable-workflow-v-mon:
+    needs: changes
+    if: ${{ needs.changes.outputs.v-mon-version == 'true' }}
+    uses: ./.github/workflows/aws-docker_image_builder_workflow.yml
+    with:
+      gh_environment: test-prod

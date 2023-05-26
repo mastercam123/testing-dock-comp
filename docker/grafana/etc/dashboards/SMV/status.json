@@ -1,0 +1,390 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 6,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-mongodb-opensource-datasource",
+        "uid": "ptPu0P17k"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false,
+            "minWidth": 50
+          },
+          "links": [
+            {
+              "title": "Afficher les courbes de l'appareil ${__data.fields.Appareil}",
+              "url": "/d/QRCdtkhVk/smv-mesea?var-device=${__data.fields.SYS_ID}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "V"
+                },
+                "1": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "O"
+                },
+                "2": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "R"
+                },
+                "3": {
+                  "color": "blue",
+                  "index": 3,
+                  "text": "VL"
+                },
+                "4": {
+                  "color": "blue",
+                  "index": 4,
+                  "text": "OL"
+                },
+                "5": {
+                  "color": "blue",
+                  "index": 5,
+                  "text": "RL"
+                },
+                "6": {
+                  "color": "text",
+                  "index": 6,
+                  "text": "RR"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^(Etat Vibratoire|Plage laser)$/"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Alarme"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "match": "true",
+                      "result": {
+                        "color": "#000000",
+                        "index": 0
+                      }
+                    },
+                    "type": "special"
+                  },
+                  {
+                    "options": {
+                      "match": "false",
+                      "result": {
+                        "color": "transparent",
+                        "index": 1
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Evenement"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "PARAM_SITES"
+                      },
+                      "1": {
+                        "index": 1,
+                        "text": "C.MAN"
+                      },
+                      "2": {
+                        "index": 2,
+                        "text": "B.M.L"
+                      },
+                      "3": {
+                        "index": 3,
+                        "text": "B.I.L"
+                      },
+                      "4": {
+                        "index": 4,
+                        "text": "START"
+                      },
+                      "5": {
+                        "index": 5,
+                        "text": "STOP"
+                      },
+                      "6": {
+                        "index": 6,
+                        "text": "B2N"
+                      },
+                      "7": {
+                        "index": 7,
+                        "text": "AUTRE"
+                      },
+                      "8": {
+                        "index": 8,
+                        "text": "TEST"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 25,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Appareil"
+          }
+        ]
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-mongodb-opensource-datasource",
+            "uid": "ptPu0P17k"
+          },
+          "rawQuery": true,
+          "refId": "A",
+          "target": "db.realtimeData.aggregate([\n    {\n        $match: {\n            $or: [\n                //                { tag: /MQTT:8888:SMV\\/MESEA\\/.+\\/.+\\/Etat Vibratoire$/ },\n                //                { tag: /MQTT:8888:SMV\\/MESEA\\/.+\\/.+\\/Plage laser$/ },\n                //                { tag: /MQTT:8888:SMV\\/MESEA\\/.+\\/.+\\/.+$/ },\n                { tag: /MQTT:8888:SMV\\/MESEA\\/.+\\/.+\\/.+$/ },\n            ]\n        }\n    },\n    {\n        $addFields: {\n            split: { $split: [\"$tag\", \"/\"] },\n        }\n    },\n\n    {\n        $addFields: {\n            SEI: { $arrayElemAt: [\"$split\", 2] }, // Site 52\n            \"Appareil\": { $arrayElemAt: [\"$split\", 3] }, // Appareil 5227a (21)\n            metric: { $arrayElemAt: [\"$split\", 4] },\n        }\n    },\n\n    {\n        $addFields: {\n            SEI: { $regexFindAll: { input: \"$SEI\", regex: /Site (\\d+)/ } }, // Site 52 => 51\n            //            \"Appareil\": {$regexFindAll: {input: \"$Appareil\", regex: /Appareil ([\\d]{4}[a|c]) \\((\\d+)\\)/ }}, // Appareil 5227a (21) => 5227a 21\n            \"Appareil\": { $regexFindAll: { input: \"$Appareil\", regex: /Appareil ([\\d]{4}[a|c]) \\((\\d+)\\)/ } }, // Appareil 5227a (21) => 5227a 21\n            //            metric: { $arrayElemAt: [\"$split\", 4] },\n        }\n    },\n\n    {\n        $addFields: {\n            SEI: { $arrayElemAt: [{ $arrayElemAt: [\"$SEI.captures\", 0] }, 0] },\n\n            Appareil: { $arrayElemAt: [{ $arrayElemAt: [\"$Appareil.captures\", 0] }, 0] },\n            SYS_ID: { $arrayElemAt: [{ $arrayElemAt: [\"$Appareil.captures\", 0] }, 1] },\n        }\n    },\n\n\n    {\n        $group: {\n            _id: {\n                \"Appareil\": \"$Appareil\",\n                SEI: \"$SEI\",\n                SYS_ID: \"$SYS_ID\",\n            },\n            Appareil: { $last: \"$Appareil\" },\n            SEI: { $last: \"$SEI\" },\n            SYS_ID: { $last: \"$SYS_ID\" },\n\n            alarmed: { $max: \"$alarmed\" },\n            invalid: { $max: \"$invalid\" },\n\n            \"Date dernier CSV\": { $max: \"$timeTagAtSource\" },\n\n            metrics: {\n                $mergeObjects: {\n\n                    $arrayToObject: [[\n                        { k: \"$metric\", v: \"$value\" },\n                    ]]\n\n                }\n            }\n        },\n    },\n\n])",
+          "type": "table"
+        }
+      ],
+      "title": "Alertes / Prévisions",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "auto",
+            "replace": false,
+            "source": "metrics"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "_id": true,
+              "invalid": true,
+              "metrics": true
+            },
+            "indexByName": {
+              "Appareil": 2,
+              "Date dernier CSV": 13,
+              "Etat Vibratoire": 7,
+              "Evenement": 5,
+              "Plage laser": 8,
+              "Prev Alarme O": 11,
+              "Prev Alarme R": 12,
+              "SEI": 0,
+              "SYS_ID": 1,
+              "T0": 6,
+              "_id": 10,
+              "alarmed": 9,
+              "invalid": 3,
+              "metrics": 4
+            },
+            "renameByName": {
+              "Evenement": "Type Evenement",
+              "SYS_ID": "SYS",
+              "alarmed": "Alarme"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "T0"
+              },
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "Prev Alarme O"
+              },
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "Prev Alarme R"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [
+    "status"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "V",
+            "R",
+            "O"
+          ],
+          "value": [
+            "V",
+            "R",
+            "O"
+          ]
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": "Niveau d'alarme",
+        "multi": true,
+        "name": "status",
+        "options": [
+          {
+            "selected": true,
+            "text": "V",
+            "value": "V"
+          },
+          {
+            "selected": true,
+            "text": "O",
+            "value": "O"
+          },
+          {
+            "selected": true,
+            "text": "R",
+            "value": "R"
+          }
+        ],
+        "query": "V,O,R",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "",
+  "title": "MESEA -- Alertes / Prévisions",
+  "uid": "L3an5RT4z",
+  "version": 32,
+  "weekStart": ""
+}

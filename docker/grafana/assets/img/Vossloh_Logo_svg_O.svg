@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="154.14529"
+   height="153.80582"
+   viewBox="0 0 154.14529 153.80582"
+   version="1.1"
+   id="svg46"
+   sodipodi:docname="Vossloh_Logo_svg_O.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <metadata
+     id="metadata50">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Vossloh_Logo_svg</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
+     id="namedview48"
+     showgrid="false"
+     inkscape:zoom="1.9898534"
+     inkscape:cx="126.78923"
+     inkscape:cy="98.691364"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg46" />
+  <!-- Generator: Sketch 3.4.2 (15855) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title31">Vossloh_Logo_svg</title>
+  <desc
+     id="desc33">Created with Sketch.</desc>
+  <defs
+     id="defs35" />
+  <g
+     id="Page-1"
+     sketch:type="MSPage"
+     transform="translate(-140.80539,-54.869987)"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1">
+    <g
+       id="Vossloh_Logo_svg"
+       sketch:type="MSLayerGroup">
+      <path
+         d="m 140.80539,131.60314 c 0,-32.52668 20.1001,-60.300052 48.5526,-71.640229 l 25.8037,47.941219 -30.0138,55.81831 h 38.7736 l 30.0144,-55.81831 -28.5202,-53.034143 c 39.0458,3.802714 69.535,36.668963 69.535,76.733153 0,42.5767 -34.4961,77.07267 -77.0724,77.07267 -42.5769,0 -77.0729,-34.49597 -77.0729,-77.07267"
+         id="path18715"
+         sketch:type="MSShapeGroup"
+         inkscape:connector-curvature="0"
+         style="fill:#32b53f" />
+    </g>
+  </g>
+</svg>

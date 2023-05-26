@@ -1,0 +1,288 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: pression
+      folder: Opérateur Principal
+      interval: 1m
+      rules:
+        - uid: b9989c42-e575-4965-bbc5-1d7e70544da8
+          title: pression haute (à gauche)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: 4kXFdV4Gk
+              model:
+                editorMode: code
+                format: time_series
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                rawQuery: true
+                rawSql: "SELECT\r\n  (string_to_array(rd.tag, '/')) [4] as eui64,\r\n  cast(rd.json_data ->> 'timeTagAtSource' as timestamp) as time,\r\n  -- rd.json_data ->> 'unit',\r\n  \"Channel 1\"\r\nFROM\r\n  realtime_data rd,\r\n  ROWS\r\nFROM\r\n  (\r\n    jsonb_to_recordset(rd.json_data -> 'valueJson') as (\"Channel 1\" numeric)\r\n  )\r\nwhere\r\n  tag ~ '60:95:CE:00:10:D0.+Channel 1.+Value$'\r\norder by\r\n  time"
+                refId: A
+                sql:
+                    columns:
+                        - parameters: []
+                          type: function
+                    groupBy:
+                        - property:
+                            type: string
+                          type: groupBy
+                    limit: 50
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: max
+                refId: B
+                settings:
+                    mode: dropNN
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 150
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          isPaused: false
+        - uid: e096c690-f640-42d9-bc7c-a1315780e4a8
+          title: pression haute (à droite)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: 4kXFdV4Gk
+              model:
+                editorMode: code
+                format: time_series
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                rawQuery: true
+                rawSql: "SELECT\r\n  (string_to_array(rd.tag, '/')) [4] as eui64,\r\n  cast(rd.json_data ->> 'timeTagAtSource' as timestamp) as time,\r\n  -- rd.json_data ->> 'unit',\r\n  \"Channel 2\" \r\nFROM\r\n  realtime_data rd,\r\n  ROWS\r\nFROM\r\n  (\r\n    jsonb_to_recordset(rd.json_data -> 'valueJson') as (\"Channel 2\" numeric)\r\n  )\r\nwhere\r\n  tag ~ '60:95:CE:00:10:D0.+Channel 2.+Value$'\r\norder by\r\n  time"
+                refId: A
+                sql:
+                    columns:
+                        - parameters: []
+                          type: function
+                    groupBy:
+                        - property:
+                            type: string
+                          type: groupBy
+                    limit: 50
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: max
+                refId: B
+                settings:
+                    mode: dropNN
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 110
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            description: la pression est au dessus du seuil pour {{ $labels.eui64 }}
+            summary: la pression est au dessus du seuil pour {{ $labels.eui64 }}
+          isPaused: false
+    - orgId: 1
+      name: temperature
+      folder: Opérateur Principal
+      interval: 1m
+      rules:
+        - uid: b29dabe2-3dfa-407e-bf7f-0717bbe67f58
+          title: temperature
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: 4kXFdV4Gk
+              model:
+                editorMode: code
+                format: time_series
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                rawQuery: true
+                rawSql: " SELECT\r\n--       rd.tag,\r\n      (string_to_array(rd.tag, '/'))[4] as eui64,\r\n\t  cast(rd.json_data->>'timeTagAtSource' as timestamp) as time,\r\n\t  \r\n\t  -- rd.json_data->>'unit',\r\n-- \t  avg(\"Temperature\")\r\n\t  \"Temperature\"\r\n    FROM\r\n      realtime_data rd,\r\n      ROWS\r\n    FROM\r\n      (\r\n        jsonb_to_recordset(rd.json_data->'valueJson') as (\"Temperature\" numeric)\r\n      )\r\n-- \t  where tag = 'MQTT:1200:spBv1.0/GRANDPARIS/Railnet18/60:95:CE:00:10:D0:18:01/Device Sensors|Temperature|Curve|Value'\r\nwhere tag ~ 'GRANDPARIS.+Temperature.+Value$'\r\n-- group by tag\r\norder by time"
+                refId: A
+                sql:
+                    columns:
+                        - parameters: []
+                          type: function
+                    groupBy:
+                        - property:
+                            type: string
+                          type: groupBy
+                    limit: 50
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: mean
+                refId: B
+                settings:
+                    mode: dropNN
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 18
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: Alerting
+          execErrState: Error
+          for: 5m
+          isPaused: false

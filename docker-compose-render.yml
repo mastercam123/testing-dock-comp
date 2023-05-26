@@ -1,0 +1,6 @@
+version: '3.9'
+services:
+  json-scada-con-populator:
+    build: docker/json-scada-conf-populator
+    #image: :--json-scada-conf-populator-
+    image: :denb0837-training-user-json-scada-conf-populator

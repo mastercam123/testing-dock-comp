@@ -1,0 +1,1 @@
+{"_id":{"$oid":"606c999f4351fb2a50f44bef"},"protocolDriver":"MQTT-SPARKPLUG-B","protocolDriverInstanceNumber":1,"enabled":true,"logLevel":1,"nodeNames":["mainNode"],"keepProtocolRunningWhileInactive":false,"activeNodeKeepAliveTimeTag":{"$date":"2022-01-28T13:36:38.336Z"},"activeNodeName":"mainNode","softwareVersion":"0.1.4","stats":{}}

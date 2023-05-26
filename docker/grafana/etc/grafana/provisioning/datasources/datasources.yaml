@@ -1,0 +1,87 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: Graphite
+    orgId: 1
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+  - name: MongoDB
+    # type: mongo-to-grafana
+    type: grafana-mongodb-opensource-datasource
+    access: proxy
+    orgId: 1
+    uid: ptPu0P17k
+    url: http://${DB_PROXY_MONGODB_GRAFANA_URL}:3333
+    timeout: 30
+    tlsSkipVerify: true
+    jsonData:
+      mongodb_url: mongodb://${MONGODB_HOSTNAME}:27017
+      mongodb_db: json_scada
+  # <string, required> name of the datasource. Required
+  - name: PostgreSQL-JSON_SCADA
+    # <string, required> datasource type. Required
+    type: postgres
+    # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required
+    access: proxy
+    # <int> org id. will default to orgId 1 if not specified
+    orgId: 1
+    # <string> custom UID which can be used to reference this datasource in other parts of the configuration, if not specified will be generated automatically
+    uid: 4kXFdV4Gk
+    # <string> url
+    # url: postgres://timescaledb:5432
+    url: ${TIMESCALEDB_HOSTNAME}:5432
+    # # <string> Deprecated, use secureJsonData.password
+    # password:
+    # <string> database user, if used
+    user: grafana
+    # <string> database name, if used
+    database: json_scada
+    # # # <bool> enable/disable basic auth
+    # # basicAuth:
+    # # # <string> basic auth username
+    # # basicAuthUser:
+    # # # <string> Deprecated, use secureJsonData.basicAuthPassword
+    # basicAuthPassword:
+    # # <bool> enable/disable with credentials headers
+    # withCredentials:
+    # <bool> mark as default datasource. Max one per org
+    isDefault: true
+    # <map> fields that will be converted to json and stored in jsonData
+    jsonData:
+      sslmode: disable # TODO!!!!!
+      postgresVersion: 1400
+      timescaledb: true
+    # jsonData:
+    #   graphiteVersion: '1.1'
+    #   tlsAuth: true
+    #   tlsAuthWithCACert: true
+    # <string> json object of data that will be encrypted.
+    # secureJsonData:
+    #   tlsCACert: '...'
+    #   tlsClientCert: '...'
+    #   tlsClientKey: '...'
+    #   # <string> database password, if used
+    #   password:
+    #   # <string> basic auth password
+    #   basicAuthPassword:
+    version: 1
+    # <bool> allow users to edit datasources from the UI.
+    editable: false
+  # https://grafana.com/grafana/plugins/frser-sqlite-datasource/
+  - name: SQLite - Grafana Internal DB
+    type: frser-sqlite-datasource
+    access: proxy
+    orgId: 1
+    uid: xRsfehEnz
+    url: sqlite:////var/lib/grafana/grafana.db
+    timeout: 30
+    tlsSkipVerify: true
+    jsonData:
+      path: /var/lib/grafana/grafana.db
+      # pathPrefix:
+      pathOptions: 'mode=ro'
+      # secureJsonData:

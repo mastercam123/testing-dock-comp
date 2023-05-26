@@ -1,0 +1,14 @@
+apiVersion: 1
+
+providers:
+  # provision folders structure from filesystem
+  # https://grafana.com/docs/grafana/latest/administration/provisioning/#provision-folders-structure-from-filesystem-to-grafana
+  - name: dashboards
+    type: file
+    # how often Grafana will scan for changed dashboards
+    updateIntervalSeconds: 30
+    # allow updating provisioned dashboards from the UI
+    allowUiUpdates: true
+    options:
+      path: /etc/dashboards
+      foldersFromFilesStructure: true

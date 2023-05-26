@@ -1,0 +1,40 @@
+# reference available at https://grafana.com/docs/grafana/next/auth/ldap/#active-directory
+
+[[servers]]
+host = "sv-vlb-0010.railway.ad"
+port = 389
+use_ssl = false
+start_tls = false
+ssl_skip_verify = true
+bind_dn = "cogi_siege\\SRedmine"
+bind_password = "Sre@mine!"
+search_filter = "(userPrincipalName=%s)"
+search_base_dns = ["OU=Users,OU=Siema,OU=Vossloh Cogifer,DC=railway,DC=ad"]
+
+[servers.attributes]
+email = "mail"
+name = "givenName"
+surname = "sn"
+username = "cn"
+member_of = "memberOf"
+
+
+
+# https://grafana.com/docs/grafana/next/auth/ldap/#group-mappings
+
+# [[servers.group_mappings]]
+# group_dn = "cn=superadmins,dc=grafana,dc=org"
+# org_role = "Admin"
+# grafana_admin = true # Available in Grafana v5.3 and above
+
+# [[servers.group_mappings]]
+# group_dn = "cn=admins,dc=grafana,dc=org"
+# org_role = "Admin"
+
+# [[servers.group_mappings]]
+# group_dn = "cn=users,dc=grafana,dc=org"
+# org_role = "Editor"
+
+[[servers.group_mappings]]
+group_dn = "*"
+org_role = "Viewer"
