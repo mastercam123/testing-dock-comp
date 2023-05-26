@@ -7,4 +7,4 @@ ENV JSON_SCADA_MONGODB_NAME=$JSON_SCADA_MONGODB_NAME
 ARG JSON_SCADA_NODE_NAME
 ENV JSON_SCADA_NODE_NAME=$JSON_SCADA_NODE_NAME
 
-RUN echo 'we are running some cool things'
+RUN echo 'we are running some cool things!'

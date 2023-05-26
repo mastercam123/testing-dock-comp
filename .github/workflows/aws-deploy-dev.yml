@@ -30,6 +30,7 @@ jobs:
             - 'mongodb-grafana/**'
             - 'json-scada/**'
             - 'docker/mosquitto/**'
+            - 'docker/json-scada-conf-populator/**'
       
   call-reusable-workflow-v-mon:
     needs: changes
