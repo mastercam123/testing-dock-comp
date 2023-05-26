@@ -9,6 +9,6 @@ ENV JSON_SCADA_NODE_NAME=$JSON_SCADA_NODE_NAME
 
 # Comment
 RUN echo 'we are running some cool things!'
-RUN echo 'This is mongodb hostname: ${MONGODB_HOSTNAME}'
-RUN echo 'This is json scada mongodb: ${JSON_SCADA_MONGODB_NAME}'
-RUN echo 'This is json node name: ${JSON_SCADA_NODE_NAME}'
+RUN echo 'This is mongodb hostname: $MONGODB_HOSTNAME'
+RUN echo 'This is json scada mongodb: $JSON_SCADA_MONGODB_NAME'
+RUN echo 'This is json node name: $JSON_SCADA_NODE_NAME'
