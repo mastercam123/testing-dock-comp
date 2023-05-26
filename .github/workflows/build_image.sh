@@ -26,6 +26,21 @@ if [[ -z $VMON_SERVER_VERSION ]]; then
   exit 1
 fi
 
+if [[ -z $JSON_SCADA_MONGODB_NAME ]]; then
+  echo "expected env JSON_SCADA_MONGODB_NAME to be set but was empty"
+  exit 1
+fi
+
+if [[ -z $JSON_SCADA_NODE_NAME ]]; then
+  echo "expected env JSON_SCADA_NODE_NAME to be set but was empty"
+  exit 1
+fi
+
+if [[ -z $MONGODB_HOSTNAME ]]; then
+  echo "expected env MONGODB_HOSTNAME to be set but was empty"
+  exit 1
+fi
+
 echo "The version is: $VMON_SERVER_VERSION"
 
 # Render a docker-compose

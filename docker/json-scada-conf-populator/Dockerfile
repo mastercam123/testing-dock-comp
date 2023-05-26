@@ -7,7 +7,7 @@ ENV JSON_SCADA_MONGODB_NAME=$JSON_SCADA_MONGODB_NAME
 ARG JSON_SCADA_NODE_NAME
 ENV JSON_SCADA_NODE_NAME=$JSON_SCADA_NODE_NAME
 
-# Comment
+## Comment
 RUN echo 'we are running some cool things!'
 RUN echo 'This is mongodb hostname: $MONGODB_HOSTNAME'
 RUN echo 'This is json scada mongodb: $JSON_SCADA_MONGODB_NAME'

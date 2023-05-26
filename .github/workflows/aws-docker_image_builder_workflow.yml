@@ -58,6 +58,10 @@ jobs:
         COMPANY_IDENTIFIER: ${{ vars.COMPANY_IDENTIFIER }}
         VMON_SERVER_VERSION: latest-${{ github.run_number }} 
         APPLICATION_NAME: ${{ vars.APPLICATION_NAME }} 
+        JSON_SCADA_MONGODB_NAME: ${{ vars.JSON_SCADA_MONGODB_NAME }}
+        JSON_SCADA_NODE_NAME: ${{ vars.JSON_SCADA_NODE_NAME }}
+        MONGODB_HOSTNAME: ${{ vars.MONGODB_HOSTNAME }}
+
       run: bash ./.github/workflows/build_image.sh
 
     - name: Log out of Amazon ECR
